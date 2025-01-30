@@ -51,10 +51,14 @@ It is a true IAC in the sense that it helps to organize other DevOps tools and s
 
 - The node can represent anything required for DevOps operations: company, project, application, environment, deployment etc. The nomenclature is important and often completely different even between two projects in a single company. Sometimes projects define applications. Sometimes applications are used in projects.
 
+- The node can also be used as a purely logical entity (like a folder/directory).
+
 - Nodes have following **core properties**:
   - Name
   - Description
   - Icon shown in the tree (like in KeePass, I really like how that thing is created)
+
+## Brainstorming about tabs
 - Nodes are windows which have tabs, each tab has a type and a node can have only a single tab of a specific type.
 - New node has no tab. To use a tab in the node you need to insert it there.
 - Each tab type has a specific functionality and goals.
@@ -62,6 +66,7 @@ It is a true IAC in the sense that it helps to organize other DevOps tools and s
   - Properties
   - Configuration
   - Scripts
+  - Interpreters
   - Scripts registry
   - Secret types
   - Workflows
@@ -90,9 +95,20 @@ It is a true IAC in the sense that it helps to organize other DevOps tools and s
 
 Configuration values can be marked as secrets. By default they are always masked with `***` if shown anywhere in the application and can be unmasked with a simple mouse click if required.
 
-A configuration marked as a secret can also be marked as a *secret reference* but this requires a *secret type*.
+A configuration marked as a secret can also be marked as a *secret reference* but this requires a *secret type* defined in the node or any ancestor.
 
 ## Brainstorming about secret types
-Secret types are managed by the user in a *secret types tab* in the node or any ancestor.
+Secret types are managed by the user in a *secret types tab*.
 
-A secret type has a name, description and a **read script** from the scripts tab of the node or any ancestor. Compulsory and optional parameters of the read script (which is inside the script tabs or script registry)
+A secret type has a name, description and a **read secret script** from the scripts tab of the node or any ancestor. Compulsory and optional parameters of the read script (defined in the script tab of the node or any ancestor) show as inputs when setting a configuration value as a secret reference.
+
+## Brainstorming about scripts
+
+A script has the following properties:
+
+- **Interpreter**: devopsr must know the interpreter to run the script. When the script is run, devopsr simply spawns a new process and the interpreter is basically a template of how the process is be spawned. The interpreter is chosen from the *interpreters tab* from the node or any ancestor. Basically this list would contain items like bash, zsh, powershell, powershell core, php, py, npm, etc...
+- **Input parameters** (0..*)
+- **Script body**
+- **Output parameters** --- interpreters don't have a notion of an output value. Only standard I/O. The output parameters are captured from the stdout of the script by convention as JSON object surrounded by `<devopser_output>` and `</devopser_output>`.
+
+
