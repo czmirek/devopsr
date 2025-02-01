@@ -14,9 +14,9 @@ It is a true IAC in the sense that it helps to organize other DevOps tools and s
 
 - The application is built in a way that the DevOps operator does not need more files to maintain multiple applications, projects, companies or settings. However using multiple files might be advantageous for different contexts e.g. one file for my own projects, another file for a client etc.
 
-- The data that the DevOps operator works may need to be read by other applications. In that case the single file can be saved as JSON or XML.
+- The data that the DevOps operator works may need to be read by other applications. In that case the single file can be saved as JSON or XML. The file structure follows a hierarchical format matching the UI tree structure, with each node containing its tabs and their content.
 
-- If the DevOps operator decides to store secrets into the file (instead of just references to the secrets) then he has an option to **encrypt the file** with a password known only to him. The aim of this tool is to be as simple to use as possible.
+- If the DevOps operator decides to store secrets into the file (instead of just references to the secrets) then he has an option to **encrypt the file** with a password known only to him. The encryption uses industry standard AES-256 encryption with a key derived from the password using PBKDF2. The aim of this tool is to be as simple to use as possible while maintaining security.
 
 - Devopsr aims to be a tool for individuals which might not fit all DevOps settings e.g. companies or corporations with strict role definitions.
 
@@ -93,7 +93,10 @@ It is a true IAC in the sense that it helps to organize other DevOps tools and s
   - There is different semantics from properties:
     - Configuration cannot be inherited. It's always related to the node only.
     - Configuration keys have unique IDs automatically assigned when created. Therefore you can have multiple keys with same name.
-    - Configuration can be **referenced** in another configuration (or anywhere else in Devopsr) either directly (by its ID) or by traversing the tree. For example you can define configuration like this: `BACKEND_URL = https://myapp${{parent.configuration.ENV}}.azurewebsites.net`. This value *resolves* into `https://myapptest.azurewebsites.net` everytime it's read by another mechanisms in the application. Referencing by ID could look like this: `https://myapp${{configid(12345)}}.azurewebsites.net`.
+    - Configuration can be **referenced** in another configuration (or anywhere else in Devopsr) either directly (by its ID) or by traversing the tree. Examples:
+      - Tree traversal: `BACKEND_URL = https://myapp${{parent.configuration.ENV}}.azurewebsites.net` resolves to `https://myapptest.azurewebsites.net`
+      - Direct ID reference: `DB_CONNECTION = Server=${{configid(12345)}};Database=myapp` resolves to `Server=sql.example.com;Database=myapp`
+      - Multiple references: `API_URL = https://${{parent.configuration.HOST}}:${{parent.configuration.PORT}}/api` resolves to `https://api.example.com:8080/api`
 
 ## Brainstorming about configuration secrets
 
@@ -113,7 +116,12 @@ A script has the following properties:
 - **Interpreter**: devopsr must know the interpreter to run the script. When the script is run, devopsr simply spawns a new process and the interpreter is basically a template of how the process is be spawned. Interpreters can be configured by the user in the root node. Interpreters are things like bash, zsh, powershell, powershell core, php, py, npm, npmx, etc...
 - **Input parameters** (0..*)
 - **Script body** or **Script file path**.
-- **Output parameters** --- interpreters don't have a notion of an output value, only standard I/O. The output parameters are captured from the stdout of the script by convention as JSON object surrounded by a configurable prefix and suffix, like `<devopser_output>` and `</devopser_output>`. Devopsr considers only the last output generated this way and only after the script is finished.
+- **Output parameters** --- interpreters don't have a notion of an output value, only standard I/O. The output parameters are captured from the stdout of the script by convention as JSON object surrounded by a configurable prefix and suffix, like `<devopser_output>` and `</devopser_output>`. For example:
+  ```
+  echo "doing work..."
+  echo "<devopser_output>{"status": "success", "url": "https://example.com"}</devopser_output>"
+  ```
+  Devopsr considers only the last output generated this way and only after the script is finished.
 
 Script body can be edited. Script can be run. Running script can be stopped. There should also be a button to open the file if the script is defined as having a file reference instead of the body.
 
@@ -121,7 +129,7 @@ When script is ran a "Script Run" object is created. A "Script Run" is the conta
 
 ## Brainstorming about manual steps
 
-A manual step require the node to have a documentation tab because all manual steps are automatically described in there. The manual step represents something the DevOps operator needs to do manually, this is described in the details of the manual step.
+A manual step requires the node to have a documentation tab because all manual steps are automatically described in there. When a manual step is created, Devopsr automatically generates a new section in the documentation tab with a unique ID and formatted template. The DevOps operator then fills in the detailed instructions for this manual step. This ensures documentation stays in sync with the defined manual steps.
 
 A manual step can describe multiple real life steps but that's up to the user how he chooses to describe the steps. The tab of manual steps is only the definition of these steps, they are meant to be used in the workflows.
 
