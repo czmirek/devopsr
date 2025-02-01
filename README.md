@@ -66,12 +66,14 @@ It is a true IAC in the sense that it helps to organize other DevOps tools and s
   - Properties
   - Configuration
   - Scripts
+  - Manual steps
   - Workflows
   - Logging
   - Documentation
   - Conventions
 
 - The root node has also the following areas to configure. These tabs are global configurations that can be present in the root node only.
+  - Dependencies
   - Interpreters
   - Scripts registry
   - Secret types
@@ -117,6 +119,14 @@ Script body can be edited. Script can be run. Running script can be stopped. The
 
 When script is ran a "Script Run" object is created. A "Script Run" is the container for the started script which can store output into logs and can also produce logs (with a special formating of echo/Write-Host command) with various properties (trace, debug, info, warning, error....) but the logs are only stored if there is a log tab present in the node. The script tab stores only the "Script Runs" but the logs visible in the script run's details are stored in the context of the log tab.
 
+## Brainstorming about manual steps
+
+A manual step require the node to have a documentation tab because all manual steps are automatically described in there. The manual step represents something the DevOps operator needs to do manually, this is described in the details of the manual step.
+
+A manual step can describe multiple real life steps but that's up to the user how he chooses to describe the steps.
+
+A manual step can have any number of **output parameters**. These can be useful with workflows, see below.
+
 ## Brainstorming about workflows
 
 Workflow tab is a basic workflow editor that is intended to represent "DevOps operator's workflows" and not necessarily CI/CD pipelines. It can be used as CI/CD pipelines but the semantics here are meant to represent IAC - things necessary to create/prepare/configure some kind of infrastructure.
@@ -128,3 +138,4 @@ Workflows contains ordered steps. Each step is either one of two types:
 A manual step require the node to have a documentation tab because all manual steps are automatically described in there. The manual step represents something the DevOps operator needs to do manually before the next step and for the whole workflow to be completed.
 
 A script is simply a reference to a script in the script tab of the node or any of its ancestors.
+
