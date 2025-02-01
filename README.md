@@ -68,15 +68,15 @@ It is a true IAC in the sense that it helps to organize other DevOps tools and s
   - Scripts
   - Manual steps
   - Workflows
-  - Logging
   - Documentation
-  - Conventions
-
+ 
 - The root node has also the following areas to configure. These tabs are global configurations that can be present in the root node only.
   - Dependencies
   - Interpreters
-  - Scripts registry
+  - Registry
   - Secret types
+  - Logging
+  - Expiration of script/workflow runs
   
 ## Brainstorming about tab types
 
@@ -117,19 +117,21 @@ A script has the following properties:
 
 Script body can be edited. Script can be run. Running script can be stopped. There should also be a button to open the file if the script is defined as having a file reference instead of the body.
 
-When script is ran a "Script Run" object is created. A "Script Run" is the container for the started script which can store output into logs and can also produce logs (with a special formating of echo/Write-Host command) with various properties (trace, debug, info, warning, error....) but the logs are only stored if there is a log tab present in the node. The script tab stores only the "Script Runs" but the logs visible in the script run's details are stored in the context of the log tab.
+When script is ran a "Script Run" object is created. A "Script Run" is the container for the started script which can store output into logs and can also produce logs (with a special formating of echo/Write-Host command) with various properties (trace, debug, info, warning, error....). The script tab stores only the "Script Runs" but the logs visible in the script run's details are stored in the context of the log.
 
 ## Brainstorming about manual steps
 
 A manual step require the node to have a documentation tab because all manual steps are automatically described in there. The manual step represents something the DevOps operator needs to do manually, this is described in the details of the manual step.
 
-A manual step can describe multiple real life steps but that's up to the user how he chooses to describe the steps.
+A manual step can describe multiple real life steps but that's up to the user how he chooses to describe the steps. The tab of manual steps is only the definition of these steps, they are meant to be used in the workflows.
 
-A manual step can have any number of **output parameters**. These can be useful with workflows, see below.
+A manual step can have input parameters and output parameters.
+- **Input parameters** represent values given/created by previous steps of the workflow, they hint user to use these values for the manual steps.
+- **Output parameters** represent values created by the user while doing the manual stuff. The values created in these steps might be required in the next script steps of the workflow.  
 
 ## Brainstorming about workflows
 
-Workflow tab is a basic workflow editor that is intended to represent "DevOps operator's workflows" and not necessarily CI/CD pipelines. It can be used as CI/CD pipelines but the semantics here are meant to represent IAC - things necessary to create/prepare/configure some kind of infrastructure.
+Workflow tab is a basic workflow editor that is intended to represent "DevOps operator's workflows" and not necessarily CI/CD pipelines. The semantics here are meant to represent IAC - things necessary to create/prepare/configure some kind of infrastructure.
 
 Workflows contains ordered steps. Each step is either one of two types:
 - manual step
@@ -139,3 +141,28 @@ A manual step require the node to have a documentation tab because all manual st
 
 A script is simply a reference to a script in the script tab of the node or any of its ancestors.
 
+Workflow can be started. Starting a workflow creates a "Workflow run". Running workflow can be paused (although you need to wait for the script to finish) or stopped (this kills any running scripts).
+
+When a workflow hits a manual step then user is asked to complete them manualy. When that is done, the user must confirm the step explicitly as completed for the workflow to continue.
+
+## Brainstorming about logging
+
+Everything the other tabs do is logged only if the root node configuration has logging enabled. In the future a logging tab attachable to the node could be implemented as well.
+
+The user can configure to log everything into files or into the root node (in memory otherwise the database file would grow in size rapidly) but honestly the logging functionality is not what the DevOps operator needs from this tool. This tool is meant to be run manually and logs only serve an immediate debugging functionality.
+
+## Brainstorming about documentation
+
+Documentation is extremely important for DevOps operators. Any node can have any number of documentation tabs and these contain any user managed content. The first format that should be supported is markdown.
+
+## Brainstorming about dependencies
+
+Dependencies is a user managed list of anything that the database requires on a local system. E.g.
+
+- terraform
+- pscore
+- az cli
+- aws cli
+- etc
+
+A dependency contains a user provided name but also a user provided script that verifies whether the dependency is installed on the system or not.
