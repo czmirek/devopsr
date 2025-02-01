@@ -10,7 +10,7 @@ It is a true IAC in the sense that it helps to organize other DevOps tools and s
 
 - It cannot be an app with a backend, frontend and a database. This application aims to solve the problem of being a **root of all DevOps**, the **true IAC**. It cannot be the root of all DevOps if you still need to figure out where to store the backend config, frontend config, connection strings, etc.
 
-- It must be a native application with UI and all the data the DevOps operator is working with must be stored in a **single file**.
+- It must be a native application with UI and all the data the DevOps operator is working with must be stored in a **single file**. It cannot be simpler than that.
 
 - The application is built in a way that the DevOps operator does not need more files to maintain multiple applications, projects, companies or settings. However using multiple files might be advantageous for different contexts e.g. one file for my own projects, another file for a client etc.
 
@@ -20,11 +20,11 @@ It is a true IAC in the sense that it helps to organize other DevOps tools and s
 
 - Devopsr aims to be a tool for individuals which might not fit all DevOps settings e.g. companies or corporations with strict role definitions.
 
-- Devopsr does nothing by itself without user defined content. 
+- Devopsr does nothing by itself without user defined content. Devopsr is meant to call other tools like terraform, various clis, etc. 
 
 - Devopsr is mainly IAC tool, not CI/CD. It can be used as one though, but there are better things that can be used as CI/CD where Devopsr only acts as a manual proxy tool.
 
-- **Root of all DevOps** is the most important point of this tool.
+- **Root of all DevOps** is the most important philosophy of this tool.
 
 ## Brainstorming about the UI
 
