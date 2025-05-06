@@ -1,9 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
-using System.Text.Json;
+﻿using System.Text.Json;
 using Devopsr.Lib;
 using Devopsr.Lib.Interfaces.Project;
+using Microsoft.Extensions.DependencyInjection;
 
-var facade = new DevopsrFacade();
+var serviceProvider = DevopsrFacade.BuildServiceProvider();
+var facade = serviceProvider.GetRequiredService<IDevopsrFacade>();
 
 if (args.Length == 2 && args[0] == "new")
 {
