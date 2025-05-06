@@ -1,0 +1,7 @@
+- Localization
+- Users
+- Permissions
+- Roles
+- Tenants
+- Diagnostics
+- Logging
