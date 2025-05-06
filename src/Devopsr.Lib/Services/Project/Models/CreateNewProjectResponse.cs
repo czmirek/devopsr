@@ -1,5 +1,3 @@
-using System;
-
 namespace Devopsr.Lib.Services.Project.Models;
 
 public sealed class CreateNewProjectResponse
