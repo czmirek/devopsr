@@ -1,4 +1,6 @@
-namespace Devopsr.Lib.Interfaces;
+using Devopsr.Lib.Services.Project.Models;
+
+namespace Devopsr.Lib.Services.Project.Interfaces;
 
 public interface IProjectService
 {

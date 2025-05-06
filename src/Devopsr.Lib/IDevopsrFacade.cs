@@ -1,4 +1,6 @@
-﻿namespace Devopsr.Lib.Interfaces;
+﻿using Devopsr.Lib.Services.Project.Interfaces;
+
+namespace Devopsr.Lib;
 
 public interface IDevopsrFacade
 {

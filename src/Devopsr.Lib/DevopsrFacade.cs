@@ -1,5 +1,5 @@
-using Devopsr.Lib.Interfaces;
-using Devopsr.Lib.Services;
+using Devopsr.Lib.Services.Project;
+using Devopsr.Lib.Services.Project.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Devopsr.Lib;
