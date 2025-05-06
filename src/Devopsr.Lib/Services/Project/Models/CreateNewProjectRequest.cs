@@ -1,6 +1,6 @@
 using System;
 
-namespace Devopsr.Lib.Services;
+namespace Devopsr.Lib.Services.Project.Models;
 
 public sealed class CreateNewProjectRequest
 {

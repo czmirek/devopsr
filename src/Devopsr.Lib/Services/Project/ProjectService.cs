@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Devopsr.Lib.Interfaces;
+using Devopsr.Lib.Services.Project.Models;
 
 namespace Devopsr.Lib.Services.Project;
 
