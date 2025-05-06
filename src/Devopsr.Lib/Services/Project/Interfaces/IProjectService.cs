@@ -1,4 +1,4 @@
-namespace Devopsr.Lib.Interfaces.Project;
+namespace Devopsr.Lib.Interfaces;
 
 public interface IProjectService
 {
@@ -7,5 +7,5 @@ public interface IProjectService
     /// </summary>
     /// <param name="filePath">The path to the .devopsr file to create.</param>
     /// <returns>A result message indicating success or error.</returns>
-    string CreateNewProject(string filePath);
+    Task<CreateNewProjectResponse> CreateNewProject(CreateNewProjectRequest request);
 }

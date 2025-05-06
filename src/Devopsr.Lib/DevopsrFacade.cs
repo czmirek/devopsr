@@ -1,4 +1,4 @@
-using Devopsr.Lib.Interfaces.Project;
+using Devopsr.Lib.Interfaces;
 using Devopsr.Lib.Services;
 using Microsoft.Extensions.DependencyInjection;
 
