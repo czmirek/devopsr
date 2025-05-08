@@ -2,7 +2,6 @@
 
 namespace Devopsr.Lib;
 
-public interface IDevopsrFacade
-{
+public interface IDevopsrFacade {
     IProjectService ProjectService { get; }
 }

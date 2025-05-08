@@ -4,15 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Devopsr.Lib;
 
-public class DevopsrFacade(IProjectService projectService) : IDevopsrFacade
-{
+public class DevopsrFacade(IProjectService projectService) : IDevopsrFacade {
     public IProjectService ProjectService { get; } = projectService;
 
-    public static IServiceProvider BuildServiceProvider()
-    {
-        var services = new ServiceCollection();
-        services.AddSingleton<IProjectService, ProjectService>();
-        services.AddSingleton<IDevopsrFacade, DevopsrFacade>(sp =>
+    public static IServiceProvider BuildServiceProvider() {
+        ServiceCollection services = new ServiceCollection();
+        _ = services.AddSingleton<IProjectService, ProjectService>();
+        _ = services.AddSingleton<IDevopsrFacade, DevopsrFacade>(sp =>
             new DevopsrFacade(sp.GetRequiredService<IProjectService>())
         );
         return services.BuildServiceProvider();
