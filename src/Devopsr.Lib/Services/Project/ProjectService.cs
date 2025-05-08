@@ -6,10 +6,10 @@ using FluentResults;
 
 namespace Devopsr.Lib.Services.Project;
 
-public class ProjectService(IProjectRepository projectRepository) : IProjectService
+public class ProjectService(IProjectRepository projectRepository, TimeProvider timeProvider) : IProjectService
 {
     private string? _currentFilePath;
-    public ProjectInMemoryModel? Current { get; private set; }
+    public ProjectServiceModel? Current { get; private set; }
 
     public async Task<Result<CreateNewProjectResponse>> CreateNewProject(CreateNewProjectRequest request)
     {
@@ -23,9 +23,11 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
             return Result.Fail(ErrorCodes.ProjectFileAlreadyExists);
         }
 
-        ProjectInMemoryModel project = new()
+        var now = timeProvider.GetLocalNow();
+        ProjectServiceModel project = new()
         {
-            Created = DateTime.UtcNow
+            Created = now,
+            LastUpdate = now
             // ...other default properties...
         };
         await projectRepository.SaveAsync(request.FilePath, project);
@@ -58,7 +60,10 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
             return Result.Fail(ErrorCodes.NoProjectLoaded);
         }
 
-        await projectRepository.SaveAsync(_currentFilePath, Current);
+        // Update LastUpdate before saving
+        var now = timeProvider.GetLocalNow();
+        var updatedProject = Current with { LastUpdate = now };
+        await projectRepository.SaveAsync(_currentFilePath, updatedProject);
 
         Current = null;
         _currentFilePath = null;

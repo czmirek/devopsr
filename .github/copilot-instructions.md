@@ -33,5 +33,10 @@
 - Models should not contain constructors.
 - Models must not expose mutable collections or allow mutation after construction.
 
+## Types
+- Use DateTimeOffset instead of DateTime
+- Use TimeProvider instead of DateTime.Now
+- Use LocalNow instead of UtcNow
+
 ## File Structure
 - Each type (class, interface, struct, enum, etc.) must be declared in its own file. Do not declare multiple types in a single file.

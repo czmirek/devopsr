@@ -29,5 +29,5 @@ public interface IProjectService
     /// <summary>
     /// Gets the current in-memory project model.
     /// </summary>
-    ProjectInMemoryModel? Current { get; }
+    ProjectServiceModel? Current { get; }
 }

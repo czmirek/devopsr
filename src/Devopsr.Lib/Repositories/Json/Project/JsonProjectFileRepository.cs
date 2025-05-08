@@ -7,7 +7,7 @@ namespace Devopsr.Lib.Repositories.Json.Project;
 
 public class JsonProjectFileRepository : IProjectRepository
 {
-    public async Task<ProjectInMemoryModel?> LoadAsync(string filePath)
+    public async Task<ProjectServiceModel?> LoadAsync(string filePath)
     {
         if (!File.Exists(filePath))
             return null;
@@ -20,7 +20,7 @@ public class JsonProjectFileRepository : IProjectRepository
         return project;
     }
 
-    public async Task SaveAsync(string filePath, ProjectInMemoryModel project)
+    public async Task SaveAsync(string filePath, ProjectServiceModel project)
     {
         await using var stream = File.Create(filePath);
         var jsonModel = ProjectModelMapper.ToJsonModel(project);

@@ -4,15 +4,21 @@ namespace Devopsr.Lib.Repositories.Json.Project;
 
 public static class ProjectModelMapper
 {
-    public static ProjectJsonModel ToJsonModel(ProjectInMemoryModel model)
+    public static ProjectJsonModel ToJsonModel(ProjectServiceModel model)
     {
         return new()
-        { Created = model.Created };
+        { 
+            Created = model.Created,
+            LastUpdate = model.LastUpdate
+        };
     }
 
-    public static ProjectInMemoryModel ToInMemoryModel(ProjectJsonModel model)
+    public static ProjectServiceModel ToInMemoryModel(ProjectJsonModel model)
     {
         return new()
-        { Created = model.Created };
+        { 
+            Created = model.Created,
+            LastUpdate = model.LastUpdate
+        };
     }
 }
