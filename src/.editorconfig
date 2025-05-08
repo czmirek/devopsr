@@ -152,8 +152,8 @@ csharp_using_directive_placement = outside_namespace:error
 csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = true:error
 csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true:error
 csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = true:error
-csharp_style_allow_blank_lines_between_consecutive_braces_experimental = true:error
-csharp_style_allow_embedded_statements_on_same_line_experimental = true:error
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false:error
+csharp_style_allow_embedded_statements_on_same_line_experimental = false:error
 
 #### C# Formatting Rules ####
 
@@ -268,8 +268,8 @@ dotnet_style_readonly_field = true:error
 dotnet_style_predefined_type_for_locals_parameters_members = true:error
 dotnet_style_predefined_type_for_member_access = true:error
 dotnet_style_require_accessibility_modifiers = for_non_interface_members:error
-dotnet_style_allow_multiple_blank_lines_experimental = true:error
-dotnet_style_allow_statement_immediately_after_block_experimental = true:error
+dotnet_style_allow_multiple_blank_lines_experimental = false:error
+dotnet_style_allow_statement_immediately_after_block_experimental = false:error
 dotnet_code_quality_unused_parameters = all:error
 dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:error
 dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:error
@@ -280,3 +280,50 @@ dotnet_style_qualification_for_property = false:error
 dotnet_style_qualification_for_method = false:error
 dotnet_style_qualification_for_event = false:error
 end_of_line = crlf
+[*.{cs,vb}]
+#### Naming styles ####
+
+# Naming rules
+
+dotnet_naming_rule.interface_should_be_begins_with_i.severity = suggestion
+dotnet_naming_rule.interface_should_be_begins_with_i.symbols = interface
+dotnet_naming_rule.interface_should_be_begins_with_i.style = begins_with_i
+
+dotnet_naming_rule.types_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.types_should_be_pascal_case.symbols = types
+dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case
+
+dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.non_field_members_should_be_pascal_case.symbols = non_field_members
+dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
+
+# Symbol specifications
+
+dotnet_naming_symbols.interface.applicable_kinds = interface
+dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.interface.required_modifiers = 
+
+dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum
+dotnet_naming_symbols.types.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.types.required_modifiers = 
+
+dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, method
+dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.non_field_members.required_modifiers = 
+
+# Naming styles
+
+dotnet_naming_style.begins_with_i.required_prefix = I
+dotnet_naming_style.begins_with_i.required_suffix = 
+dotnet_naming_style.begins_with_i.word_separator = 
+dotnet_naming_style.begins_with_i.capitalization = pascal_case
+
+dotnet_naming_style.pascal_case.required_prefix = 
+dotnet_naming_style.pascal_case.required_suffix = 
+dotnet_naming_style.pascal_case.word_separator = 
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+dotnet_naming_style.pascal_case.required_prefix = 
+dotnet_naming_style.pascal_case.required_suffix = 
+dotnet_naming_style.pascal_case.word_separator = 
+dotnet_naming_style.pascal_case.capitalization = pascal_case

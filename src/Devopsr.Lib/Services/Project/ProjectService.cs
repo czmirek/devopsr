@@ -10,9 +10,11 @@ public class ProjectService : IProjectService {
         if (!request.FilePath.EndsWith(".devopsr", StringComparison.OrdinalIgnoreCase)) {
             return Result.Fail(ErrorCodes.InvalidProjectFileExtension);
         }
+
         if (File.Exists(request.FilePath)) {
             return Result.Fail(ErrorCodes.ProjectFileAlreadyExists);
         }
+
         var project = new { created = DateTime.UtcNow };
         string json = JsonSerializer.Serialize(project, new JsonSerializerOptions { WriteIndented = true });
         await File.WriteAllTextAsync(request.FilePath, json);
