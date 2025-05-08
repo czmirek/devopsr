@@ -11,4 +11,22 @@ public interface IProjectService
     /// <param name="request">The request model containing the file path.</param>
     /// <returns>A result containing the response model or errors.</returns>
     Task<Result<CreateNewProjectResponse>> CreateNewProject(CreateNewProjectRequest request);
+
+    /// <summary>
+    /// Loads a project file into memory and sets the Current property.
+    /// </summary>
+    /// <param name="request">The request model containing the file path.</param>
+    /// <returns>A result indicating success or error.</returns>
+    Task<Result> Open(OpenProjectRequest request);
+
+    /// <summary>
+    /// Saves the current in-memory model to the file and clears the Current property.
+    /// </summary>
+    /// <returns>A result indicating success or error.</returns>
+    Task<Result> Close();
+
+    /// <summary>
+    /// Gets the current in-memory project model.
+    /// </summary>
+    object? Current { get; }
 }
