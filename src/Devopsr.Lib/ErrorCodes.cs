@@ -2,10 +2,11 @@ namespace Devopsr.Lib;
 
 public static class ErrorCodes
 {
-    public static readonly string InvalidProjectFileExtension = "InvalidProjectFileExtension";
-    public static readonly string ProjectFileAlreadyExists = "ProjectFileAlreadyExists";
-    public static readonly string ProjectFileDoesNotExist = "ProjectFileDoesNotExist";
-    public static readonly string NoProjectLoaded = "NoProjectLoaded";
-    public static readonly string ProjectFileDeserializationFailed = "ProjectFileDeserializationFailed";
+    public const string InvalidProjectFileExtension = "InvalidProjectFileExtension";
+    public const string ProjectFileAlreadyExists = "ProjectFileAlreadyExists";
+    public const string ProjectFileDoesNotExist = "ProjectFileDoesNotExist";
+    public const string NoProjectLoaded = "NoProjectLoaded";
+    public const string ProjectFileDeserializationFailed = "ProjectFileDeserializationFailed";
+    public const string NoProjectOpen = "NoProjectOpen";
     // Add more error codes as needed
 }

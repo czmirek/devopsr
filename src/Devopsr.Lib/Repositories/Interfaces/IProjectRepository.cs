@@ -1,4 +1,4 @@
-using Devopsr.Lib.Models;
+using Devopsr.Lib.Services.Models;
 
 namespace Devopsr.Lib.Repositories.Interfaces;
 

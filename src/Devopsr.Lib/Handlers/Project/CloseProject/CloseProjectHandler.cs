@@ -1,28 +1,19 @@
-using Devopsr.Lib.Repositories.Interfaces;
 using Devopsr.Lib.Services;
 using FluentResults;
 using MediatR;
 
 namespace Devopsr.Lib.Handlers.Project.CloseProject;
 
-public class CloseProjectHandler : IRequestHandler<CloseProjectRequest, Result<CloseProjectResponse>>
+internal class CloseProjectHandler(ILoadedProject loadedProject) : IRequestHandler<CloseProjectRequest, Result>
 {
-    private readonly IProjectService _projectService;
-
-    public CloseProjectHandler(IProjectService projectService)
+    public Task<Result> Handle(CloseProjectRequest request, CancellationToken cancellationToken)
     {
-        _projectService = projectService;
-    }
-
-    public Task<Result<CloseProjectResponse>> Handle(CloseProjectRequest request, CancellationToken cancellationToken)
-    {
-        if (_projectService.CurrentProject is null)
+        if (loadedProject.CurrentProject is null)
         {
-            return Task.FromResult(Result.Fail<CloseProjectResponse>(ErrorCodes.NoProjectOpen));
+            return Task.FromResult(Result.Fail(ErrorCodes.NoProjectOpen));
         }
 
-        _projectService.ClearCurrentProject();
-        var response = new CloseProjectResponse();
-        return Task.FromResult(Result.Ok(response));
+        loadedProject.ClearCurrentProject();
+        return Task.FromResult(Result.Ok());
     }
 }

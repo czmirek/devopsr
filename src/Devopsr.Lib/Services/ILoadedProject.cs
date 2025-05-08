@@ -1,9 +1,8 @@
-// filepath: c:\Users\lesar\source\repos\devopsr\src\Devopsr.Lib\Services\IProjectService.cs
-using Devopsr.Lib.Models;
+using Devopsr.Lib.Services.Models;
 
 namespace Devopsr.Lib.Services;
 
-public interface IProjectService
+internal interface ILoadedProject
 {
     ProjectServiceModel? CurrentProject { get; }
     string? CurrentFilePath { get; }

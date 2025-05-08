@@ -3,4 +3,4 @@ using MediatR;
 
 namespace Devopsr.Lib.Handlers.Project.CreateNewProject;
 
-public record CreateNewProjectRequest(string FilePath) : IRequest<Result<CreateNewProjectResponse>>;
+public record CreateNewProjectRequest(string FilePath) : IRequest<Result>;

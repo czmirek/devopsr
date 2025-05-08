@@ -1,4 +1,4 @@
-namespace Devopsr.Lib.Models;
+namespace Devopsr.Lib.Services.Models;
 
 public class NodeServiceModel
 {
