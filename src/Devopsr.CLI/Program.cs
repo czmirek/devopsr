@@ -1,19 +1,22 @@
 ﻿using System.CommandLine;
 using Devopsr.Lib;
+using Devopsr.Lib.Services.Project.Interfaces;
 using Devopsr.Lib.Services.Project.Models;
 using Microsoft.Extensions.DependencyInjection;
 
-RootCommand rootCommand = new("Devopsr CLI");
+var services = new ServiceCollection();
+services.AddDevopsrLib();
+var serviceProvider = services.BuildServiceProvider();
 
+RootCommand rootCommand = new("Devopsr CLI");
 Command newCommand = new("new", "Create a new project file")
 {
     new Argument<string>("filePath", "Path to the new project file")
 };
 newCommand.SetHandler(async (string filePath) =>
 {
-    var serviceProvider = DevopsrFacade.BuildServiceProvider();
-    var facade = serviceProvider.GetRequiredService<IDevopsrFacade>();
-    var result = await facade.ProjectService.CreateNewProject(new CreateNewProjectRequest { FilePath = filePath });
+    var projectService = serviceProvider.GetRequiredService<IProjectService>();
+    var result = await projectService.CreateNewProject(new CreateNewProjectRequest { FilePath = filePath });
     Formatter.PrintResult(result, $"Created new project file at '{filePath}'.");
 }, (System.CommandLine.Binding.IValueDescriptor<string>)newCommand.Arguments [0]);
 
@@ -23,9 +26,11 @@ Command openCommand = new("open", "Open and interact with a project file")
 };
 openCommand.SetHandler(async (string filePath) =>
 {
-    var serviceProvider = DevopsrFacade.BuildServiceProvider();
-    var facade = serviceProvider.GetRequiredService<IDevopsrFacade>();
-    var openResult = await facade.ProjectService.Open(new OpenProjectRequest { FilePath = filePath });
+    var services = new ServiceCollection();
+    services.AddDevopsrLib();
+    var serviceProvider = services.BuildServiceProvider();
+    var projectService = serviceProvider.GetRequiredService<IProjectService>();
+    var openResult = await projectService.Open(new OpenProjectRequest { FilePath = filePath });
     if (!openResult.IsSuccess)
     {
         Formatter.WriteErrorResult(openResult);
@@ -39,7 +44,7 @@ openCommand.SetHandler(async (string filePath) =>
         string? input = Console.ReadLine();
         if (input == null || input.Trim().ToLowerInvariant() == "close")
         {
-            var closeResult = await facade.ProjectService.Close();
+            var closeResult = await projectService.Close();
             Formatter.PrintResult(closeResult, $"Project file '{filePath}' closed and saved.");
             break;
         }
