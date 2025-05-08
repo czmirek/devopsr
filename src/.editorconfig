@@ -93,14 +93,14 @@ csharp_style_var_for_built_in_types = false:error
 csharp_style_var_when_type_is_apparent = false:error
 
 # Expression-bodied members
-csharp_style_expression_bodied_accessors = true:error
+csharp_style_expression_bodied_accessors = false:error
 csharp_style_expression_bodied_constructors = false:error
-csharp_style_expression_bodied_indexers = true:error
-csharp_style_expression_bodied_lambdas = true:error
+csharp_style_expression_bodied_indexers = false:error
+csharp_style_expression_bodied_lambdas = false:error
 csharp_style_expression_bodied_local_functions = false:error
 csharp_style_expression_bodied_methods = false:error
 csharp_style_expression_bodied_operators = false:error
-csharp_style_expression_bodied_properties = true:error
+csharp_style_expression_bodied_properties = false:error
 
 # Pattern matching preferences
 csharp_style_pattern_matching_over_as_with_null_check = true:error
@@ -168,35 +168,35 @@ csharp_new_line_between_query_expression_clauses = true:error
 
 # Indentation preferences
 csharp_indent_block_contents = true:error
-csharp_indent_braces = true
+csharp_indent_braces = false
 csharp_indent_case_contents = true:error
 csharp_indent_case_contents_when_block = true:error
 csharp_indent_labels = no_change
 csharp_indent_switch_labels = true:error
 
 # Space preferences
-csharp_space_after_cast = true
-csharp_space_after_colon_in_inheritance_clause = true:error
-csharp_space_after_comma = true:error
-csharp_space_after_dot = true
-csharp_space_after_keywords_in_control_flow_statements = true:error
+csharp_space_after_cast = false
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_after_comma = true
+csharp_space_after_dot = false
+csharp_space_after_keywords_in_control_flow_statements = false
 csharp_space_after_semicolon_in_for_statement = true:error
 csharp_space_around_binary_operators = before_and_after
-csharp_space_around_declaration_statements = ignore
+csharp_space_around_declaration_statements = false
 csharp_space_before_colon_in_inheritance_clause = true:error
-csharp_space_before_comma = true
-csharp_space_before_dot = true
-csharp_space_before_open_square_brackets = true
+csharp_space_before_comma = false
+csharp_space_before_dot = false
+csharp_space_before_open_square_brackets = false
 csharp_space_before_semicolon_in_for_statement = true
-csharp_space_between_empty_square_brackets = true
-csharp_space_between_method_call_empty_parameter_list_parentheses = true
-csharp_space_between_method_call_name_and_opening_parenthesis = true
-csharp_space_between_method_call_parameter_list_parentheses = true
-csharp_space_between_method_declaration_empty_parameter_list_parentheses = true
-csharp_space_between_method_declaration_name_and_open_parenthesis = true
-csharp_space_between_method_declaration_parameter_list_parentheses = true
-csharp_space_between_parentheses = expressions,type_casts,control_flow_statements
-csharp_space_between_square_brackets = true
+csharp_space_between_empty_square_brackets = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_declaration_name_and_open_parenthesis = false
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_parentheses = false
+csharp_space_between_square_brackets = false
 
 # Wrapping preferences
 csharp_preserve_single_line_blocks = true:error
