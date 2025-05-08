@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{02EA681E
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devopsr.Test", "Devopsr.Test\Devopsr.Test.csproj", "{B3FA05F2-CB6C-4ECC-8564-073DC8D12872}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,10 @@ Global
 		{B8E542D5-5D7E-1E65-D6A0-B7C9842F83EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8E542D5-5D7E-1E65-D6A0-B7C9842F83EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8E542D5-5D7E-1E65-D6A0-B7C9842F83EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3FA05F2-CB6C-4ECC-8564-073DC8D12872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3FA05F2-CB6C-4ECC-8564-073DC8D12872}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3FA05F2-CB6C-4ECC-8564-073DC8D12872}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3FA05F2-CB6C-4ECC-8564-073DC8D12872}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
