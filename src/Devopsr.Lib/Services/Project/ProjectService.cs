@@ -29,7 +29,7 @@ public class ProjectService(IProjectRepository projectRepository, TimeProvider t
         return Result.Ok(new CreateNewProjectResponse());
     }
 
-    public async Task<Result> Open(OpenProjectRequest request)
+    public async Task<Result<OpenProjectResponse>> Open(OpenProjectRequest request)
     {
         if (!File.Exists(request.FilePath))
         {
@@ -37,18 +37,18 @@ public class ProjectService(IProjectRepository projectRepository, TimeProvider t
         }
 
         var projectModel = await projectRepository.LoadAsync(request.FilePath);
-        
-        if(projectModel is null)
+
+        if (projectModel is null)
         {
             return Result.Fail(ErrorCodes.ProjectFileDeserializationFailed);
         }
 
         Current = projectModel;
         _currentFilePath = request.FilePath;
-        return Result.Ok();
+        return Result.Ok(new OpenProjectResponse());
     }
 
-    public async Task<Result> Close()
+    public async Task<Result<CloseProjectResponse>> Close()
     {
         if (Current == null || string.IsNullOrEmpty(_currentFilePath))
         {
@@ -60,6 +60,6 @@ public class ProjectService(IProjectRepository projectRepository, TimeProvider t
 
         Current = null;
         _currentFilePath = null;
-        return Result.Ok();
+        return Result.Ok(new CloseProjectResponse());
     }
 }

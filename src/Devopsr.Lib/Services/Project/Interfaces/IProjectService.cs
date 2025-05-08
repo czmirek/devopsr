@@ -18,13 +18,13 @@ public interface IProjectService
     /// </summary>
     /// <param name="request">The request model containing the file path.</param>
     /// <returns>A result indicating success or error.</returns>
-    Task<Result> Open(OpenProjectRequest request);
+    Task<Result<OpenProjectResponse>> Open(OpenProjectRequest request);
 
     /// <summary>
     /// Saves the current in-memory model to the file and clears the Current property.
     /// </summary>
     /// <returns>A result indicating success or error.</returns>
-    Task<Result> Close();
+    Task<Result<CloseProjectResponse>> Close();
 
     /// <summary>
     /// Gets the current in-memory project model.

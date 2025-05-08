@@ -38,5 +38,12 @@
 - Use TimeProvider instead of DateTime.Now
 - Use LocalNow instead of UtcNow
 
+## Regions
+- Do not use regions
+
+## Tests
+- Write tests for services and repositories
+- Use Moq
+
 ## File Structure
 - Each type (class, interface, struct, enum, etc.) must be declared in its own file. Do not declare multiple types in a single file.
