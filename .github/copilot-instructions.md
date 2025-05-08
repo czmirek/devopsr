@@ -38,19 +38,10 @@
 - Service models must be suffixed with ServiceModel.
 - Service models can be mutable.
 
-## Types
+## General
 - Use DateTimeOffset instead of DateTime
 - Use TimeProvider instead of DateTime.Now
 - Use LocalNow instead of UtcNow
-
-## Regions
 - Do not use regions
-
-## Tests
-- Write tests for services and repositories
-- Use Moq in tests
-- Tests on more than 10 lines should be placed in a separate file.
-
-## File Structure
 - Each type must be declared in its own file except nested private types.
 - Do not declare multiple types in a single file.
