@@ -24,12 +24,7 @@ public class ProjectService(IProjectRepository projectRepository, TimeProvider t
         }
 
         var now = timeProvider.GetLocalNow();
-        ProjectServiceModel project = new()
-        {
-            Created = now,
-            LastUpdate = now
-            // ...other default properties...
-        };
+        ProjectServiceModel project = new(now, now);
         await projectRepository.SaveAsync(request.FilePath, project);
         return Result.Ok(new CreateNewProjectResponse());
     }
@@ -60,10 +55,8 @@ public class ProjectService(IProjectRepository projectRepository, TimeProvider t
             return Result.Fail(ErrorCodes.NoProjectLoaded);
         }
 
-        // Update LastUpdate before saving
-        var now = timeProvider.GetLocalNow();
-        var updatedProject = Current with { LastUpdate = now };
-        await projectRepository.SaveAsync(_currentFilePath, updatedProject);
+        Current.LastUpdate = timeProvider.GetLocalNow();
+        await projectRepository.SaveAsync(_currentFilePath, Current);
 
         Current = null;
         _currentFilePath = null;

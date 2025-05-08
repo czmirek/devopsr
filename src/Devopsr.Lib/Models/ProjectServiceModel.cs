@@ -2,6 +2,12 @@
 
 public sealed class ProjectServiceModel
 {
-    public required DateTimeOffset Created { get; init; }
-    public required DateTimeOffset LastUpdate { get; init; }
+    internal ProjectServiceModel(DateTimeOffset created, DateTimeOffset lastUpdate)
+    {
+        Created = created;
+        LastUpdate = lastUpdate;
+    }
+
+    public DateTimeOffset Created { get; }
+    public DateTimeOffset LastUpdate { get; internal set; }
 }
