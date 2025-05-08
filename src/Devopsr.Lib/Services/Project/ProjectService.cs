@@ -24,7 +24,6 @@ public class ProjectService : IProjectService
         await File.WriteAllTextAsync(request.FilePath, json);
         return Result.Ok(new CreateNewProjectResponse
         {
-            Success = true,
             Message = $"Created new project file at '{request.FilePath}'."
         });
     }
