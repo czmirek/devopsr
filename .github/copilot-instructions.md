@@ -1,16 +1,13 @@
 # Devopsr Architecture Specification
 
 ## CLI Project
-- The CLI project must not contain any business logic.
-- The CLI project must not create or instantiate any classes directly.
-- All types and services must be registered in a dependency injection container, which is created and configured inside the Devopsr.Lib project.
-The CLI project should only obtain a fully configured IServiceProvider (or equivalent) from the Lib project and use it to resolve required services.
+- All types and services must be registered in a dependency injection containerin the Devopsr.Lib project.
 
 ## Layers
-- All functionality must be implemented in services, not in the CLI.
 - The CLI is the UI layer.
-- Lib is the Data layer in the Repositories directory.
-- Lib is also the Business Logic layer in Services
+- Lib is the Data layer and the business logic layer
+- Data layer is implemented in the Repositories directory.
+- Business logic is implemented in Services directory.
 
 ## Business logic services
 - All services must be invokable only via interfaces.
@@ -18,10 +15,16 @@ The CLI project should only obtain a fully configured IServiceProvider (or equiv
 - All interface methods must accept a request model as input and return a response model as output wrapped in a Result from FluentResults.
 - If Result.Fail is invoked, do not return the response model. Instead, return a relevant error code which should be implemented in a custom public static class called ErrorCodes.
 
+## Repositories
+- Repositories should accept and return the service models.
+- Repository methods that write data should first map the service models into corresponding repository models and then serialize and save these models.
+- Repository methods that read data should first deserialize into into corresponding repository models and then map them into service models.
+- Mappers and repository models must be in the Repositories directory.
+
 ## Namespaces
 - Namespaces must strictly follow the folder structure of the project.
 
-## Input and Output Models
+## Input and Output Models of services
 - All input (request) and output (response) models must be immutable.
 - All models must be declared as sealed classes.
 - All properties must be required, with only getters and initializers (no setters).
