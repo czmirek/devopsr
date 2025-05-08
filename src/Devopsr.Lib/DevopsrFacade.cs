@@ -1,18 +1,20 @@
-using Devopsr.Lib.Services.Project;
-using Devopsr.Lib.Services.Project.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
+using Devopsr . Lib . Services . Project;
+using Devopsr . Lib . Services . Project . Interfaces;
+using Microsoft . Extensions . DependencyInjection;
 
-namespace Devopsr.Lib;
+namespace Devopsr . Lib;
 
-public class DevopsrFacade(IProjectService projectService) : IDevopsrFacade {
+public class DevopsrFacade ( IProjectService projectService ) : IDevopsrFacade
+    {
     public IProjectService ProjectService { get; } = projectService;
 
-    public static IServiceProvider BuildServiceProvider() {
+    public static IServiceProvider BuildServiceProvider ( )
+        {
         ServiceCollection services = new();
-        _ = services.AddSingleton<IProjectService, ProjectService>();
-        _ = services.AddSingleton<IDevopsrFacade, DevopsrFacade>(sp =>
-            new DevopsrFacade(sp.GetRequiredService<IProjectService>())
+        _ = services . AddSingleton<IProjectService , ProjectService> ( );
+        _ = services . AddSingleton<IDevopsrFacade , DevopsrFacade> ( sp =>
+            new DevopsrFacade ( sp . GetRequiredService<IProjectService> ( ) )
         );
-        return services.BuildServiceProvider();
+        return services . BuildServiceProvider ( );
+        }
     }
-}

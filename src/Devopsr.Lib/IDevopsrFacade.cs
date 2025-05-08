@@ -1,7 +1,8 @@
-﻿using Devopsr.Lib.Services.Project.Interfaces;
+﻿using Devopsr . Lib . Services . Project . Interfaces;
 
-namespace Devopsr.Lib;
+namespace Devopsr . Lib;
 
-public interface IDevopsrFacade {
+public interface IDevopsrFacade
+    {
     IProjectService ProjectService { get; }
-}
+    }
