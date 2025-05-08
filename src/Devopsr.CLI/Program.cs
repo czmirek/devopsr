@@ -1,30 +1,31 @@
-﻿using Devopsr.Lib;
+﻿using System.CommandLine;
+using Devopsr.Lib;
 using Devopsr.Lib.Services.Project.Models;
 using Microsoft.Extensions.DependencyInjection;
 
-var serviceProvider = DevopsrFacade.BuildServiceProvider();
-var facade = serviceProvider.GetRequiredService<IDevopsrFacade>();
+RootCommand rootCommand = new("Devopsr CLI");
 
-if(args.Length == 2 && args[0] == "new")
+Command newCommand = new("new", "Create a new project file")
 {
-    string filePath = args[1];
-    var resultTask = facade.ProjectService.CreateNewProject(new CreateNewProjectRequest
-    {
-        FilePath = filePath,
-    });
-    var result = await resultTask;
+    new Argument<string>("filePath", "Path to the new project file")
+};
+newCommand.SetHandler(async (string filePath) =>
+{
+    var serviceProvider = DevopsrFacade.BuildServiceProvider();
+    var facade = serviceProvider.GetRequiredService<IDevopsrFacade>();
+    var result = await facade.ProjectService.CreateNewProject(new CreateNewProjectRequest { FilePath = filePath });
     Formatter.PrintResult(result, $"Created new project file at '{filePath}'.");
-    return;
-}
+}, (System.CommandLine.Binding.IValueDescriptor<string>)newCommand.Arguments[0]);
 
-if(args.Length == 2 && args[0] == "open")
+Command openCommand = new("open", "Open and interact with a project file")
 {
-    string filePath = args[1];
-    var openResult = await facade.ProjectService.Open(new OpenProjectRequest
-    {
-        FilePath = filePath
-    });
-
+    new Argument<string>("filePath", "Path to the project file to open")
+};
+openCommand.SetHandler(async (string filePath) =>
+{
+    var serviceProvider = DevopsrFacade.BuildServiceProvider();
+    var facade = serviceProvider.GetRequiredService<IDevopsrFacade>();
+    var openResult = await facade.ProjectService.Open(new OpenProjectRequest { FilePath = filePath });
     if(!openResult.IsSuccess)
     {
         Formatter.WriteErrorResult(openResult);
@@ -35,21 +36,19 @@ if(args.Length == 2 && args[0] == "open")
     while(true)
     {
         Console.Write("devopsr> ");
-
         string? input = Console.ReadLine();
-
         if(input == null || input.Trim().ToLowerInvariant() == "close")
         {
             var closeResult = await facade.ProjectService.Close();
             Formatter.PrintResult(closeResult, $"Project file '{filePath}' closed and saved.");
             break;
         }
-
         // Here you can add more commands to manipulate the in-memory model via the service
         Console.WriteLine($"Unknown command: {input}");
     }
+}, (System.CommandLine.Binding.IValueDescriptor<string>)openCommand.Arguments[0]);
 
-    return;
-}
+rootCommand.AddCommand(newCommand);
+rootCommand.AddCommand(openCommand);
 
-Console.WriteLine("Usage: devopsr new <path-to-project.devopsr>");
+return await rootCommand.InvokeAsync(args);
