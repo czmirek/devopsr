@@ -4,7 +4,7 @@ public static class Formatter
 {
     public static void PrintResult<T>(Result<T> result, string successMessage)
     {
-        if(result.IsSuccess)
+        if (result.IsSuccess)
         {
             Console.WriteLine("✅ " + successMessage);
         }
@@ -16,7 +16,7 @@ public static class Formatter
 
     public static void PrintResult(Result result, string successMessage)
     {
-        if(result.IsSuccess)
+        if (result.IsSuccess)
         {
             Console.WriteLine("✅ " + successMessage);
         }

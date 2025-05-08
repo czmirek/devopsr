@@ -13,12 +13,12 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
 
     public async Task<Result<CreateNewProjectResponse>> CreateNewProject(CreateNewProjectRequest request)
     {
-        if(!request.FilePath.EndsWith(".devopsr", StringComparison.OrdinalIgnoreCase))
+        if (!request.FilePath.EndsWith(".devopsr", StringComparison.OrdinalIgnoreCase))
         {
             return Result.Fail(ErrorCodes.InvalidProjectFileExtension);
         }
 
-        if(File.Exists(request.FilePath))
+        if (File.Exists(request.FilePath))
         {
             return Result.Fail(ErrorCodes.ProjectFileAlreadyExists);
         }
@@ -34,13 +34,13 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
 
     public async Task<Result> Open(OpenProjectRequest request)
     {
-        if(!File.Exists(request.FilePath))
+        if (!File.Exists(request.FilePath))
         {
             return Result.Fail(ErrorCodes.ProjectFileDoesNotExist);
         }
 
         var loadResult = await projectRepository.LoadAsync(request.FilePath);
-        if(loadResult.IsFailed || loadResult.Value == null)
+        if (loadResult.IsFailed || loadResult.Value == null)
         {
             return Result.Fail(loadResult.Errors.First().Message);
         }
@@ -52,13 +52,13 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
 
     public async Task<Result> Close()
     {
-        if(Current == null || string.IsNullOrEmpty(_currentFilePath))
+        if (Current == null || string.IsNullOrEmpty(_currentFilePath))
         {
             return Result.Fail(ErrorCodes.NoProjectLoaded);
         }
 
         var saveResult = await projectRepository.SaveAsync(_currentFilePath, Current);
-        if(saveResult.IsFailed)
+        if (saveResult.IsFailed)
         {
             return Result.Fail(saveResult.Errors.First().Message);
         }

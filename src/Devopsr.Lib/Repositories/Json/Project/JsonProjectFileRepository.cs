@@ -12,7 +12,7 @@ public class JsonProjectFileRepository : IProjectRepository
     {
         try
         {
-            if(!File.Exists(filePath))
+            if (!File.Exists(filePath))
                 return Result.Fail<ProjectInMemoryModel?>(ErrorCodes.ProjectFileDoesNotExist);
 
             await using var stream = File.OpenRead(filePath);
@@ -22,7 +22,7 @@ public class JsonProjectFileRepository : IProjectRepository
             var project = ProjectModelMapper.ToInMemoryModel(jsonModel);
             return Result.Ok<ProjectInMemoryModel?>(project);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return Result.Fail<ProjectInMemoryModel?>(ex.Message);
         }
@@ -37,7 +37,7 @@ public class JsonProjectFileRepository : IProjectRepository
             await JsonSerializer.SerializeAsync(stream, jsonModel, new JsonSerializerOptions { WriteIndented = true });
             return Result.Ok();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return Result.Fail(ex.Message);
         }
