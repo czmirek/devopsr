@@ -1,12 +1,15 @@
 ﻿using System.CommandLine;
 using Devopsr.Lib;
-using Devopsr.Lib.Services.Project.Interfaces;
-using Devopsr.Lib.Services.Project.Models;
+using Devopsr.Lib.Handlers.Project.CloseProject;
+using Devopsr.Lib.Handlers.Project.CreateNewProject;
+using Devopsr.Lib.Handlers.Project.OpenProject;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 var services = new ServiceCollection();
 services.AddDevopsrLib();
 var serviceProvider = services.BuildServiceProvider();
+var sender = serviceProvider.GetRequiredService<ISender>();
 
 RootCommand rootCommand = new("Devopsr CLI");
 Command newCommand = new("new", "Create a new project file")
@@ -15,8 +18,7 @@ Command newCommand = new("new", "Create a new project file")
 };
 newCommand.SetHandler(async (string filePath) =>
 {
-    var projectService = serviceProvider.GetRequiredService<IProjectService>();
-    var result = await projectService.CreateNewProject(new CreateNewProjectRequest { FilePath = filePath });
+    var result = await sender.Send(new CreateNewProjectRequest(filePath));
     Formatter.PrintResult(result, $"Created new project file at '{filePath}'.");
 }, (System.CommandLine.Binding.IValueDescriptor<string>)newCommand.Arguments [0]);
 
@@ -26,14 +28,10 @@ Command openCommand = new("open", "Open and interact with a project file")
 };
 openCommand.SetHandler(async (string filePath) =>
 {
-    var services = new ServiceCollection();
-    services.AddDevopsrLib();
-    var serviceProvider = services.BuildServiceProvider();
-    var projectService = serviceProvider.GetRequiredService<IProjectService>();
-    var openResult = await projectService.Open(new OpenProjectRequest { FilePath = filePath });
-    if (!openResult.IsSuccess)
+    var result = await sender.Send(new OpenProjectRequest(filePath));
+    if (!result.IsSuccess)
     {
-        Formatter.WriteErrorResult(openResult);
+        Formatter.WriteErrorResult(result);
         return;
     }
 
@@ -44,7 +42,7 @@ openCommand.SetHandler(async (string filePath) =>
         string? input = Console.ReadLine();
         if (input == null || input.Trim().ToLowerInvariant() == "close")
         {
-            var closeResult = await projectService.Close();
+            var closeResult = await sender.Send(new CloseProjectRequest());
             Formatter.PrintResult(closeResult, $"Project file '{filePath}' closed and saved.");
             break;
         }

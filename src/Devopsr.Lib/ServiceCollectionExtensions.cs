@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddDevopsrLib(this IServiceCollection services)
     {
         services.AddSingleton(TimeProvider.System);
-        services.AddTransient<IProjectRepository, JsonProjectFileRepository>();
+        services.AddScoped<IProjectRepository, JsonProjectFileRepository>();
         services.AddSingleton<ILoadedProject, LoadedProjectService>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ServiceCollectionExtensions).Assembly));
         return services;
