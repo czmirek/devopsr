@@ -11,7 +11,10 @@
 
 ## Business logic Handlers
 - All business logic is contained in Handlers directory containing MediatR handlers.
-- Service methods must accept a request model as input and return either non generic fluent result or generic fluent result with the response model.
+- Handlers must be internal
+- Handlers must always accept a request model
+- Handlers do not have to response with a response model.
+- Handlers must always respond with a Result or generic Result.
 - Result.Fail must be returned only with an error code.
 - Error codes are implemented in a custom public static class called ErrorCodes.
 - Request and response models must be sealed immutable classes and all properties must be required with get and init.

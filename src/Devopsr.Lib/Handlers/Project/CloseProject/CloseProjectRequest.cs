@@ -3,4 +3,7 @@ using MediatR;
 
 namespace Devopsr.Lib.Handlers.Project.CloseProject;
 
-public record CloseProjectRequest : IRequest<Result>;
+public sealed class CloseProjectRequest : IRequest<Result>
+{
+
+}
