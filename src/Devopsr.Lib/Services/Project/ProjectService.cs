@@ -22,9 +22,6 @@ public class ProjectService : IProjectService
         var project = new { created = DateTime.UtcNow };
         string json = JsonSerializer.Serialize(project, new JsonSerializerOptions { WriteIndented = true });
         await File.WriteAllTextAsync(request.FilePath, json);
-        return Result.Ok(new CreateNewProjectResponse
-        {
-            Message = $"Created new project file at '{request.FilePath}'."
-        });
+        return Result.Ok(new CreateNewProjectResponse());
     }
 }

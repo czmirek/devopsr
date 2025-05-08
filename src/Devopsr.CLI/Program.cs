@@ -8,11 +8,12 @@ var facade = serviceProvider.GetRequiredService<IDevopsrFacade>();
 if(args.Length == 2 && args[0] == "new")
 {
     string filePath = args[1];
-    var result = facade.ProjectService.CreateNewProject(new CreateNewProjectRequest
+    var resultTask = facade.ProjectService.CreateNewProject(new CreateNewProjectRequest
     {
         FilePath = filePath,
     });
-    Console.WriteLine(result);
+    var result = await resultTask;
+    Formatter.PrintResult(result, $"Created new project file at '{filePath}'.");
     return;
 }
 
