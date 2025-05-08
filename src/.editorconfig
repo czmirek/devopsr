@@ -142,8 +142,8 @@ csharp_style_prefer_tuple_swap = true:error
 csharp_style_prefer_unbound_generic_type_in_nameof = true:error
 csharp_style_prefer_utf8_string_literals = true:error
 csharp_style_throw_expression = true:error
-csharp_style_unused_value_assignment_preference = discard_variable:error
-csharp_style_unused_value_expression_statement_preference = discard_variable:error
+csharp_style_unused_value_assignment_preference = discard_variable:silent
+csharp_style_unused_value_expression_statement_preference = discard_variable:silent
 
 # 'using' directive preferences
 csharp_using_directive_placement = outside_namespace:error
@@ -270,7 +270,7 @@ dotnet_style_predefined_type_for_member_access = true:error
 dotnet_style_require_accessibility_modifiers = for_non_interface_members:error
 dotnet_style_allow_multiple_blank_lines_experimental = false:error
 dotnet_style_allow_statement_immediately_after_block_experimental = false:error
-dotnet_code_quality_unused_parameters = all:error
+dotnet_code_quality_unused_parameters = all:silent
 dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:error
 dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:error
 dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:error

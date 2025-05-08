@@ -15,10 +15,6 @@ public static class ProjectModelMapper
 
     public static ProjectServiceModel ToInMemoryModel(ProjectJsonModel model)
     {
-        return new()
-        { 
-            Created = model.Created,
-            LastUpdate = model.LastUpdate
-        };
+        return new(model.Created, model.LastUpdate);
     }
 }
