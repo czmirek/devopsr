@@ -6,9 +6,19 @@ using MediatR;
 
 namespace Devopsr.Lib.Handlers.Project.CreateNewProject;
 
-public class CreateNewProjectHandler(IProjectRepository projectRepository, TimeProvider timeProvider, CurrentProjectHolderService currentProjectHolderService)
-    : IRequestHandler<CreateNewProjectRequest, Result<CreateNewProjectResponse>>
+public class CreateNewProjectHandler : IRequestHandler<CreateNewProjectRequest, Result<CreateNewProjectResponse>>
 {
+    private readonly IProjectRepository _projectRepository;
+    private readonly IProjectService _projectService;
+    private readonly TimeProvider _timeProvider;
+
+    public CreateNewProjectHandler(IProjectRepository projectRepository, IProjectService projectService, TimeProvider timeProvider)
+    {
+        _projectRepository = projectRepository;
+        _projectService = projectService;
+        _timeProvider = timeProvider;
+    }
+
     public async Task<Result<CreateNewProjectResponse>> Handle(CreateNewProjectRequest request, CancellationToken cancellationToken)
     {
         if (!request.FilePath.EndsWith(".devopsr", StringComparison.OrdinalIgnoreCase))
@@ -21,11 +31,18 @@ public class CreateNewProjectHandler(IProjectRepository projectRepository, TimeP
             return Result.Fail(ErrorCodes.ProjectFileAlreadyExists);
         }
 
-        var now = timeProvider.GetLocalNow();
-        ProjectServiceModel project = new(now, now);
-        await projectRepository.SaveAsync(request.FilePath, project);
-        // Optionally, set the newly created project as the current project
-        // currentProjectHolderService.SetCurrentProject(project, request.FilePath);
-        return Result.Ok(new CreateNewProjectResponse());
+        var now = _timeProvider.GetLocalNow();
+        var project = new ProjectServiceModel
+        {
+            Name = request.Name,
+            CreatedAt = now,
+            UpdatedAt = now
+        };
+
+        await _projectRepository.SaveProject(project, request.FilePath);
+        _projectService.SetCurrentProject(project, request.FilePath);
+
+        var response = new CreateNewProjectResponse(project.Id);
+        return Result.Ok(response);
     }
 }

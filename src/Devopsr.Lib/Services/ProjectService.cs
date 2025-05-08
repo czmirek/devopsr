@@ -1,8 +1,9 @@
+// filepath: c:\Users\lesar\source\repos\devopsr\src\Devopsr.Lib\Services\ProjectService.cs
 using Devopsr.Lib.Models;
 
 namespace Devopsr.Lib.Services;
 
-public class CurrentProjectHolderService
+public class ProjectService : IProjectService
 {
     public ProjectServiceModel? CurrentProject { get; private set; }
     public string? CurrentFilePath { get; private set; }

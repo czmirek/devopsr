@@ -5,21 +5,24 @@ using MediatR;
 
 namespace Devopsr.Lib.Handlers.Project.CloseProject;
 
-public class CloseProjectHandler(IProjectRepository projectRepository, TimeProvider timeProvider, CurrentProjectHolderService currentProjectHolderService)
-    : IRequestHandler<CloseProjectRequest, Result<CloseProjectResponse>>
+public class CloseProjectHandler : IRequestHandler<CloseProjectRequest, Result<CloseProjectResponse>>
 {
-    public async Task<Result<CloseProjectResponse>> Handle(CloseProjectRequest request, CancellationToken cancellationToken)
+    private readonly IProjectService _projectService;
+
+    public CloseProjectHandler(IProjectService projectService)
     {
-        if (currentProjectHolderService.CurrentProject == null || string.IsNullOrEmpty(currentProjectHolderService.CurrentFilePath))
+        _projectService = projectService;
+    }
+
+    public Task<Result<CloseProjectResponse>> Handle(CloseProjectRequest request, CancellationToken cancellationToken)
+    {
+        if (_projectService.CurrentProject is null)
         {
-            return Result.Fail(ErrorCodes.NoProjectLoaded);
+            return Task.FromResult(Result.Fail<CloseProjectResponse>(ErrorCodes.NoProjectOpen));
         }
 
-        var projectToSave = currentProjectHolderService.CurrentProject;
-        projectToSave.LastUpdate = timeProvider.GetLocalNow();
-        await projectRepository.SaveAsync(currentProjectHolderService.CurrentFilePath, projectToSave);
-
-        currentProjectHolderService.ClearCurrentProject();
-        return Result.Ok(new CloseProjectResponse());
+        _projectService.ClearCurrentProject();
+        var response = new CloseProjectResponse();
+        return Task.FromResult(Result.Ok(response));
     }
 }

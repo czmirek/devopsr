@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton(TimeProvider.System);
         services.AddTransient<IProjectRepository, JsonProjectFileRepository>();
-        services.AddSingleton<CurrentProjectHolderService>();
+        services.AddSingleton<IProjectService, ProjectService>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ServiceCollectionExtensions).Assembly));
         return services;
     }

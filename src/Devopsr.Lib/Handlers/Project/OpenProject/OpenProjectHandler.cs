@@ -5,9 +5,17 @@ using MediatR;
 
 namespace Devopsr.Lib.Handlers.Project.OpenProject;
 
-public class OpenProjectHandler(IProjectRepository projectRepository, CurrentProjectHolderService currentProjectHolderService)
-    : IRequestHandler<OpenProjectRequest, Result<OpenProjectResponse>>
+public class OpenProjectHandler : IRequestHandler<OpenProjectRequest, Result<OpenProjectResponse>>
 {
+    private readonly IProjectRepository _projectRepository;
+    private readonly IProjectService _projectService;
+
+    public OpenProjectHandler(IProjectRepository projectRepository, IProjectService projectService)
+    {
+        _projectRepository = projectRepository;
+        _projectService = projectService;
+    }
+
     public async Task<Result<OpenProjectResponse>> Handle(OpenProjectRequest request, CancellationToken cancellationToken)
     {
         if (!File.Exists(request.FilePath))
@@ -15,14 +23,14 @@ public class OpenProjectHandler(IProjectRepository projectRepository, CurrentPro
             return Result.Fail(ErrorCodes.ProjectFileDoesNotExist);
         }
 
-        var projectModel = await projectRepository.LoadAsync(request.FilePath);
-
-        if (projectModel is null)
+        var project = await _projectRepository.GetProject(request.FilePath);
+        if (project is null)
         {
-            return Result.Fail(ErrorCodes.ProjectFileDeserializationFailed);
+            return Result.Fail<OpenProjectResponse>(ErrorCodes.ProjectNotFound);
         }
 
-        currentProjectHolderService.SetCurrentProject(projectModel, request.FilePath);
-        return Result.Ok(new OpenProjectResponse());
+        _projectService.SetCurrentProject(project, request.FilePath);
+        var response = new OpenProjectResponse(project);
+        return Result.Ok(response);
     }
 }
