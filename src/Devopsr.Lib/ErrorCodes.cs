@@ -1,4 +1,4 @@
-namespace Devopsr.Lib.Services;
+namespace Devopsr.Lib;
 
 public static class ErrorCodes
 {

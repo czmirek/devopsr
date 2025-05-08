@@ -1,8 +1,6 @@
-// filepath: c:\Users\lesar\source\repos\devopsr\src\Devopsr.Lib\ServiceCollectionExtensions.cs
 using Devopsr.Lib.Repositories.Interfaces;
 using Devopsr.Lib.Repositories.Json.Project;
-using Devopsr.Lib.Services.Project;
-using Devopsr.Lib.Services.Project.Interfaces;
+using Devopsr.Lib.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Devopsr.Lib;
@@ -13,7 +11,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton(TimeProvider.System);
         services.AddTransient<IProjectRepository, JsonProjectFileRepository>();
-        services.AddSingleton<IProjectService, ProjectService>();
+        services.AddSingleton<CurrentProjectHolderService>();
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ServiceCollectionExtensions).Assembly));
         return services;
     }
 }
