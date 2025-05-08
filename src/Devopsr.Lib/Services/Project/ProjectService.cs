@@ -1,15 +1,15 @@
-using System.Text.Json;
+using Devopsr.Lib.Models;
+using Devopsr.Lib.Repositories.Interfaces;
 using Devopsr.Lib.Services.Project.Interfaces;
 using Devopsr.Lib.Services.Project.Models;
 using FluentResults;
 
 namespace Devopsr.Lib.Services.Project;
 
-public class ProjectService : IProjectService
+public class ProjectService(IProjectRepository projectRepository) : IProjectService
 {
     private string? _currentFilePath;
-
-    public object? Current { get; private set; }
+    public ProjectInMemoryModel? Current { get; private set; }
 
     public async Task<Result<CreateNewProjectResponse>> CreateNewProject(CreateNewProjectRequest request)
     {
@@ -23,10 +23,13 @@ public class ProjectService : IProjectService
             return Result.Fail(ErrorCodes.ProjectFileAlreadyExists);
         }
 
-        var project = new { created = DateTime.UtcNow };
-        string json = JsonSerializer.Serialize(project, new JsonSerializerOptions { WriteIndented = true });
-        await File.WriteAllTextAsync(request.FilePath, json);
-        return Result.Ok(new CreateNewProjectResponse());
+        ProjectInMemoryModel project = new()
+        {
+            Created = DateTime.UtcNow
+            // ...other default properties...
+        };
+        var saveResult = await projectRepository.SaveAsync(request.FilePath, project);
+        return saveResult.IsFailed ? (Result<CreateNewProjectResponse>)Result.Fail(saveResult.Errors.First().Message) : Result.Ok(new CreateNewProjectResponse());
     }
 
     public async Task<Result> Open(OpenProjectRequest request)
@@ -36,17 +39,15 @@ public class ProjectService : IProjectService
             return Result.Fail(ErrorCodes.ProjectFileDoesNotExist);
         }
 
-        try
+        var loadResult = await projectRepository.LoadAsync(request.FilePath);
+        if(loadResult.IsFailed || loadResult.Value == null)
         {
-            string json = await File.ReadAllTextAsync(request.FilePath);
-            Current = JsonSerializer.Deserialize<object>(json);
-            _currentFilePath = request.FilePath;
-            return Result.Ok();
+            return Result.Fail(loadResult.Errors.First().Message);
         }
-        catch(Exception ex)
-        {
-            return Result.Fail($"FailedToLoadProjectFile: {ex.Message}");
-        }
+
+        Current = loadResult.Value;
+        _currentFilePath = request.FilePath;
+        return Result.Ok();
     }
 
     public async Task<Result> Close()
@@ -56,17 +57,14 @@ public class ProjectService : IProjectService
             return Result.Fail(ErrorCodes.NoProjectLoaded);
         }
 
-        try
+        var saveResult = await projectRepository.SaveAsync(_currentFilePath, Current);
+        if(saveResult.IsFailed)
         {
-            string updatedJson = JsonSerializer.Serialize(Current, new JsonSerializerOptions { WriteIndented = true });
-            await File.WriteAllTextAsync(_currentFilePath, updatedJson);
-            Current = null;
-            _currentFilePath = null;
-            return Result.Ok();
+            return Result.Fail(saveResult.Errors.First().Message);
         }
-        catch(Exception ex)
-        {
-            return Result.Fail($"FailedToSaveProjectFile: {ex.Message}");
-        }
+
+        Current = null;
+        _currentFilePath = null;
+        return Result.Ok();
     }
 }

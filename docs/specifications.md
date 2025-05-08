@@ -6,8 +6,13 @@
 - All types and services must be registered in a dependency injection container, which is created and configured inside the Devopsr.Lib project.
 The CLI project should only obtain a fully configured IServiceProvider (or equivalent) from the Lib project and use it to resolve required services.
 
-## Services and Interfaces
+## Layers
 - All functionality must be implemented in services, not in the CLI.
+- The CLI is the UI layer.
+- Lib is the Data layer in the Repositories directory.
+- Lib is also the Business Logic layer in Services
+
+## Business logic services
 - All services must be invokable only via interfaces.
 - All interface methods must be asynchronous. Do not use the Async suffix.
 - All interface methods must accept a request model as input and return a response model as output wrapped in a Result from FluentResults.

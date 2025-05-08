@@ -1,3 +1,4 @@
+using Devopsr.Lib.Models;
 using Devopsr.Lib.Services.Project.Models;
 using FluentResults;
 
@@ -28,5 +29,5 @@ public interface IProjectService
     /// <summary>
     /// Gets the current in-memory project model.
     /// </summary>
-    object? Current { get; }
+    ProjectInMemoryModel? Current { get; }
 }
