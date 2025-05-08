@@ -1,8 +1,9 @@
 using System;
 
-namespace Devopsr.Lib.Services.Project.Models;
-
-public sealed class CreateNewProjectRequest
+namespace Devopsr.Lib.Services.Project.Models
 {
-    public required string FilePath { get; init; }
+    public sealed class CreateNewProjectRequest
+    {
+        public required string FilePath { get; init; }
+    }
 }

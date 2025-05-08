@@ -10,7 +10,8 @@ The CLI project should only obtain a fully configured IServiceProvider (or equiv
 - All functionality must be implemented in services, not in the CLI.
 - All services must be invokable only via interfaces.
 - All interface methods must be asynchronous. Do not use the Async suffix.
-- All interface methods must accept a request model as input and return a response model as output.
+- All interface methods must accept a request model as input and return a response model as output wrapped in a Result from FluentResults.
+- If Result.Fail is invoked, do not return the response model. Instead, return a relevant error code which should be implemented in a custom public static class called ErrorCodes.
 
 ## Namespaces
 - Namespaces must strictly follow the folder structure of the project.
@@ -21,7 +22,6 @@ The CLI project should only obtain a fully configured IServiceProvider (or equiv
 - All properties must be required, with only getters and initializers (no setters).
 - Models should not contain constructors.
 - Models must not expose mutable collections or allow mutation after construction.
-
 
 ## File Structure
 - Each type (class, interface, struct, enum, etc.) must be declared in its own file. Do not declare multiple types in a single file.

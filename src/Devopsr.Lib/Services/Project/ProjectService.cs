@@ -1,24 +1,30 @@
 using Devopsr.Lib.Services.Project.Interfaces;
 using Devopsr.Lib.Services.Project.Models;
+using FluentResults;
 using System.Text.Json;
 
-namespace Devopsr.Lib.Services.Project;
-
-public class ProjectService : IProjectService
+namespace Devopsr.Lib.Services.Project
 {
-    public async Task<CreateNewProjectResponse> CreateNewProject(CreateNewProjectRequest request)
+    public class ProjectService : IProjectService
     {
-        if (!request.FilePath.EndsWith(".devopsr", StringComparison.OrdinalIgnoreCase))
+        public async Task<Result<CreateNewProjectResponse>> CreateNewProject(CreateNewProjectRequest request)
         {
-            return new CreateNewProjectResponse(false, "Project file must have a .devopsr extension.");
+            if (!request.FilePath.EndsWith(".devopsr", StringComparison.OrdinalIgnoreCase))
+            {
+                return Result.Fail(ErrorCodes.InvalidProjectFileExtension);
+            }
+            if (File.Exists(request.FilePath))
+            {
+                return Result.Fail(ErrorCodes.ProjectFileAlreadyExists);
+            }
+            var project = new { created = DateTime.UtcNow };
+            var json = JsonSerializer.Serialize(project, new JsonSerializerOptions { WriteIndented = true });
+            await File.WriteAllTextAsync(request.FilePath, json);
+            return Result.Ok(new CreateNewProjectResponse
+            {
+                Success = true,
+                Message = $"Created new project file at '{request.FilePath}'."
+            });
         }
-        if (File.Exists(request.FilePath))
-        {
-            return new CreateNewProjectResponse(false, $"File '{request.FilePath}' already exists.");
-        }
-        var project = new { created = DateTime.UtcNow };
-        var json = JsonSerializer.Serialize(project, new JsonSerializerOptions { WriteIndented = true });
-        await File.WriteAllTextAsync(request.FilePath, json);
-        return new CreateNewProjectResponse(true, $"Created new project file at '{request.FilePath}'.");
     }
 }
