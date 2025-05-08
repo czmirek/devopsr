@@ -4,14 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Devopsr.Lib;
 
-public class DevopsrFacade : IDevopsrFacade
+public class DevopsrFacade(IProjectService projectService) : IDevopsrFacade
 {
-    public IProjectService ProjectService { get; }
-
-    public DevopsrFacade(IProjectService projectService)
-    {
-        ProjectService = projectService;
-    }
+    public IProjectService ProjectService { get; } = projectService;
 
     public static IServiceProvider BuildServiceProvider()
     {
