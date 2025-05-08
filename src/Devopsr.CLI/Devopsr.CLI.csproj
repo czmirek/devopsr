@@ -11,4 +11,12 @@
     <ProjectReference Include="..\Devopsr.Lib\Devopsr.Lib.csproj" />
   </ItemGroup>
 
+  <Target Name="FormatCode" BeforeTargets="Build">
+    <Exec Command="dotnet format --verify-no-changes" />
+  </Target>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\lesar\source\repos\devopsr\src\Devopsr.CLI\.editorconfig" />
+  </ItemGroup>
+
 </Project>
