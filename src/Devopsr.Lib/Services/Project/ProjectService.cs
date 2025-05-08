@@ -28,8 +28,8 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
             Created = DateTime.UtcNow
             // ...other default properties...
         };
-        var saveResult = await projectRepository.SaveAsync(request.FilePath, project);
-        return saveResult.IsFailed ? (Result<CreateNewProjectResponse>)Result.Fail(saveResult.Errors.First().Message) : Result.Ok(new CreateNewProjectResponse());
+        await projectRepository.SaveAsync(request.FilePath, project);
+        return Result.Ok(new CreateNewProjectResponse());
     }
 
     public async Task<Result> Open(OpenProjectRequest request)
@@ -39,13 +39,14 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
             return Result.Fail(ErrorCodes.ProjectFileDoesNotExist);
         }
 
-        var loadResult = await projectRepository.LoadAsync(request.FilePath);
-        if (loadResult.IsFailed || loadResult.Value == null)
+        var projectModel = await projectRepository.LoadAsync(request.FilePath);
+        
+        if(projectModel is null)
         {
-            return Result.Fail(loadResult.Errors.First().Message);
+            return Result.Fail(ErrorCodes.ProjectFileDeserializationFailed);
         }
 
-        Current = loadResult.Value;
+        Current = projectModel;
         _currentFilePath = request.FilePath;
         return Result.Ok();
     }
@@ -57,11 +58,7 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
             return Result.Fail(ErrorCodes.NoProjectLoaded);
         }
 
-        var saveResult = await projectRepository.SaveAsync(_currentFilePath, Current);
-        if (saveResult.IsFailed)
-        {
-            return Result.Fail(saveResult.Errors.First().Message);
-        }
+        await projectRepository.SaveAsync(_currentFilePath, Current);
 
         Current = null;
         _currentFilePath = null;

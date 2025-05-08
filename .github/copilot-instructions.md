@@ -17,6 +17,8 @@
 
 ## Repositories
 - Repositories should accept and return the service models.
+- Repositories do NOT use FluentResults and try/catch blocks.
+- Repository methods always assume they are used correctly in the code. Business logic is responsible for using them correctly.
 - Repository methods that write data should first map the service models into corresponding repository models and then serialize and save these models.
 - Repository methods that read data should first deserialize into into corresponding repository models and then map them into service models.
 - Mappers and repository models must be in the Repositories directory.
