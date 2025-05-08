@@ -6,8 +6,10 @@ public sealed class ProjectServiceModel
     {
         Created = created;
         LastUpdate = lastUpdate;
+        RootNode = new NodeServiceModel { Id = "root" };
     }
 
     public DateTimeOffset Created { get; }
     public DateTimeOffset LastUpdate { get; internal set; }
+    public NodeServiceModel RootNode { get; internal set; }
 }
