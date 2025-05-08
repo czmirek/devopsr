@@ -1,0 +1,5 @@
+<Project>
+  <Target Name="FormatSolution" BeforeTargets="Build" Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">
+    <Exec Command="dotnet format ../Devopsr.CLI.sln" />
+  </Target>
+</Project>
