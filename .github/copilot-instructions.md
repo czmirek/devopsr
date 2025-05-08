@@ -52,5 +52,5 @@
 - Tests on more than 10 lines should be placed in a separate file.
 
 ## File Structure
-- Each type (class, interface, struct, enum, etc.) must be declared in its own file.
+- Each type must be declared in its own file except nested private types.
 - Do not declare multiple types in a single file.
