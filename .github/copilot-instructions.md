@@ -11,34 +11,21 @@
 
 ## Business logic Handlers
 - All business logic is contained in Handlers directory containing MediatR handlers.
-- Service methods must accept a request model as input and return either non generic result or generic result with the response model.
+- Service methods must accept a request model as input and return either non generic fluent result or generic fluent result with the response model.
 - Result.Fail must be returned only with an error code.
 - Error codes are implemented in a custom public static class called ErrorCodes.
+- Request and response models must be sealed immutable classes and all properties must be required with get and init.
 
 ## Repositories
 - Repositories should accept and return the service models.
 - Repositories do not use FluentResults and try/catch blocks.
-- Repository models are always fully mutable.
-- Repository methods assume they are used correctly from the business logic. 
-- Repository methods that write data should first map the service models into corresponding repository models and then serialize and save these models.
-- Repository methods that read data should first deserialize into into corresponding repository models and then map them into service models.
-- Mappers and repository models must be in the Repositories directory.
-
-## Namespaces
-- Namespaces must strictly follow the folder structure of the project.
-
-## Async
-- Do not use the Async suffix.
-
-## Request and response models.
-- Request and response models must be always immutable.
-- Request and response models must be suffixed with Request or Response and have all properties required with getters and initializers.
-
-## Service models
-- Service models must be suffixed with ServiceModel.
-- Service models can be mutable.
+- Repository models are always fully mutable and used only in repositories.
+- Repositories map between service models and repository models.
+- Repository models are used to serialize to storage or deserialize from storage.
 
 ## General
+- Do not use the Async suffix.
+- Namespaces must strictly follow the folder structure of the project.
 - Use DateTimeOffset instead of DateTime
 - Use TimeProvider instead of DateTime.Now
 - Use LocalNow instead of UtcNow
